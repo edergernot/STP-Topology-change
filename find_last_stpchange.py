@@ -5,7 +5,6 @@ import datetime, time
 from colorama import Fore
 
 
-
 def isTimeFormat(input):
     try:
         time.strptime(input, '%H:%M:%S')
@@ -40,7 +39,6 @@ def getspantreeport(ssh):
     print ("Try to find CDP-Neigbor on Interface "+my_lastfrom)
     return(my_lastfrom)
 
-
 def findport_on_stack(ssh):
     try:
         print ("Switch is Stack, Try to find port on Stackmembers")
@@ -69,12 +67,16 @@ def findport_on_stack(ssh):
 #########################       
 #
 #      MAIN Programm
+#      init variables
 #
 #########################
 
 seeddevice = input("IP-Adress of Seeddevice: ")
 username = input ("Username to Connect to Network-Devices: ")
 password = getpass("Password for user "+username+":")
+
+hoplist = []
+hopcount = 0
 
 device = {
     'device_type': 'cisco_ios',
@@ -83,11 +85,19 @@ device = {
     'password': password}
 
 print ("Try to Connect to seeddevice :"+seeddevice+"\n")
+
 try:
     while True:
         ssh = Netmiko(**device)
         hostname = ssh.find_prompt()[:-1]
         print (Fore.GREEN+"Connected to",hostname,Fore.RESET)
+        if hostname in hoplist:
+            print ("-"*30)
+            print (Fore.RED,"Loop dedected : Device "+hostname+" allready parsed./n ")
+            print (Fore.RESET)
+            quit()
+        hoplist.append(hostname)
+        hopcount += 1
         
         port = getspantreeport(ssh)
         
@@ -114,20 +124,50 @@ try:
                             port = port.replace("Te","TenGigabitEthernet")
                         if "Fa" == port[0:2]:
                             port = port.replace("Fa","FastEthernet")
+                        if "Eth" == port[0:3]:
+                            port = port.replace("Eth","Ethernet")
 
-               
-            for element in cdp_nei:
-                if element["local_port"] == port:
-                            neighbor_ip = element["management_ip"]
-                            neighbor = element["destination_host"]
-                            sw_version = element["software_version"]
-                            if "(NX-OS)" in sw_version:
-                                device_type  = "cisco_nxos"
-                            if "IOS" in sw_version:
-                                device_type = "cisco_ios"  
+            if port[0:2]=="po":
+                sh_int=ssh.send_command("show int "+port)
+                for line in sh_int.split("\n"):
+                    if "Members in this" in line:
+                        port = line.split()[-1]
+                        print ("Spanningtee Change on Portchannel! One Member is ",port) 
+                        if "Gi" == port[0:2]:
+                            port = port.replace("Gi","GigabitEthernet")
+                        if "Te" == port[0:2]:
+                            port = port.replace("Te","TenGigabitEthernet")
+                        if "Fa" == port[0:2]:
+                            port = port.replace("Fa","FastEthernet")
+                        if "Eth" == port[0:3]:
+                            port = port.replace("Eth","Ethernet")   
+
+            if device["device_type"] == "cisco_ios":
+                # print ("IOS Device")   
+                for element in cdp_nei:
+                    if element["local_port"] == port:
+                                neighbor_ip = element["management_ip"]
+                                neighbor = element["destination_host"]
+                                sw_version = element["software_version"]
+                                if "(NX-OS)" in sw_version:
+                                    device_type  = "cisco_nxos"
+                                if "IOS" in sw_version:
+                                    device_type = "cisco_ios" 
             
+            if device["device_type"] == "cisco_nxos":
+                # print ("NXOS DEvice")
+                for element in cdp_nei:
+                    if element["local_port"] == port:
+                                neighbor_ip = element["mgmt_ip"]
+                                neighbor = element["dest_host"]
+                                sw_version = element["version"]
+                                if "(NX-OS)" in sw_version:
+                                    device_type  = "cisco_nxos"
+                                if "IOS" in sw_version:
+                                    device_type = "cisco_ios" 
+
             if neighbor_ip =="":
-                print ("\nNo CDP Neighbor on Switch ",hostname,", Port:",port)
+                print ("\nNo CDP Neighbor on Switch ",hostname,", Port:",port, "\n We needet ",hopcount," Hops")
                 print ("-"*60)
                 interface_cfg = ssh.send_command("show running-config interface "+port)
                 print ("Configuration for Port "+port)
@@ -145,7 +185,7 @@ try:
         print ("Try to Connect to "+device["host"]+"\n")
 
 except Exception as e:
+    print (Fore.RED)
     print (e) 
+    print (Fore.RESET)
         
-        
-
