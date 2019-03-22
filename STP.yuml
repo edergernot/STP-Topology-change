@@ -1,0 +1,6 @@
+// {type: activity}
+
+(start) -> (Seeddevice, Username, Password ?) -> (Connect Seeddevice) -> (Show spanning tree detail) 
+(Show spanning tree detail) -> (Find latest STP change) -> ( CDP-Neighbor Present ) ->   (Swich never checked ) -> (Connect to CDP-Neigbor) -> (Show spanning tree detail) 
+ (Find latest STP change)-> (No CDP Neighbor) -> (Show Interface Config) -> (end) 
+( CDP-Neighbor Present )-> (Switch allready checked) -> (end)

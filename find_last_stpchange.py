@@ -93,7 +93,7 @@ try:
         print (Fore.GREEN+"Connected to",hostname,Fore.RESET)
         if hostname in hoplist:
             print ("-"*30)
-            print (Fore.RED,"Loop dedected : Device "+hostname+" allready parsed./n ")
+            print (Fore.RED,"Loop dedected : Device "+hostname+" allready parsed! ")
             print (Fore.RESET)
             quit()
         hoplist.append(hostname)
@@ -109,8 +109,6 @@ try:
             neighbor_ip = ""
             if port[0:5]=="Stack":
                 port = findport_on_stack(ssh)    
-                # print (Fore.RED,"Stacking Interfaces not supported NOW:\n",Fore.RESET+"Please use the 'Session' Command to run the command 'show spanningtree detail | inc last|from'  on Stackmember")
-                # quit()
             cdp_nei = ssh.send_command("show cdp neighbor detail",use_textfsm=True)
             if port[0:2]=="Po":
                 sh_int=ssh.send_command("show int "+port)
@@ -178,7 +176,9 @@ try:
             New_Device = {"device_type":device_type,"host":neighbor_ip,'username': username, "password":password,  }
             device = New_Device 
         except Exception as e:
-            # print (e)
+            print (Fore.RED)
+            print (e)
+            print (Fore.RESET)
             quit()
         ssh.cleanup()
         print ("Disconnected from Device")
