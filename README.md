@@ -8,23 +8,23 @@ I decided to run this in a shell and use Python.
 For connecting to the networkdevices 3rd-party library "Netmiko" is used.
 Best practice is to install it in a virtual environment.
 * Clone the repository
-'''  
+```
 git clone https://github.com/edergernot/networkautomation
-'''
+```
 * go into directory
-'''
+```
 cd networkautomation
-'''
+```
 * create and activate virtual environment
-'''
+```
 python -m venv venv
 venv/scrips/activate.bat   (windows)
 source /venv/bin/
-'''
+```
 * Install required 3rd-party library
-'''
+```
 pip install netmiko, colorama
-'''
+```
 
 ### How it workes
 
@@ -48,3 +48,6 @@ It stopps when it sees the STP-Topology change from a CDP-Neighbor which was alr
 * ToDo: Work when STP-Topology change is longer than 24 houres.
 
 ![Screenshot of an succesfull run](screenshot.png)
+
+Thanks for beeing publiched on Cisco Code Exchange
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/edergernot/networkautomation)
