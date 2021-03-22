@@ -49,5 +49,5 @@ It stopps when it sees the STP-Topology change from a CDP-Neighbor which was alr
 
 ![Screenshot of an succesfull run](screenshot.png)
 
-Thanks for beeing publiched on Cisco Code Exchange
+Thanks for beeing published on Cisco Code Exchange: 
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/edergernot/networkautomation)
