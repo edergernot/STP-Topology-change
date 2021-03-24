@@ -116,6 +116,12 @@ try:
                     if "Members in this" in line:
                         port = line.split()[-1]
                         print ("Spanningtee Change on Portchannel! One Member is ",port) 
+                        if "Hu" == port[0:2]:
+                            port = port.replace("Hu","HundredGigE")
+                        if "Fo" == port[0:2]:
+                            port = port.replace("Fo","FortyGigabitEthernet")
+                        if "TW" == port[0:2]:
+                            port = port.replace("Tw","TwentyFiveGigE")
                         if "Gi" == port[0:2]:
                             port = port.replace("Gi","GigabitEthernet")
                         if "Te" == port[0:2]:
@@ -131,6 +137,12 @@ try:
                     if "Members in this" in line:
                         port = line.split()[-1]
                         print ("Spanningtee Change on Portchannel! One Member is ",port) 
+                        if "Hu" == port[0:2]:
+                            port = port.replace("Hu","HundredGigE")
+                        if "Fo" == port[0:2]:
+                            port = port.replace("Fo","FortyGigabitEthernet")
+                        if "TW" == port[0:2]:
+                            port = port.replace("Tw","TwentyFiveGigE")
                         if "Gi" == port[0:2]:
                             port = port.replace("Gi","GigabitEthernet")
                         if "Te" == port[0:2]:
