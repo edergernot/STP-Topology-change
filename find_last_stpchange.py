@@ -17,7 +17,6 @@ def getspantreeport(ssh):
     shortest = "23:59:59"
     my_lasttime = "23:59:58"
     my_lastfrom = ""
-    neighbor_ip=""
     t_shortest = datetime.datetime.strptime( shortest, '%H:%M:%S').time()
     for line in spanningtree.split("\n"):
         if "last" in line:
@@ -93,7 +92,7 @@ try:
         print (Fore.GREEN+"Connected to",hostname,Fore.RESET)
         if hostname in hoplist:
             print ("-"*30)
-            print (Fore.RED,"Loop dedected : Device "+hostname+" allready parsed! ")
+            print (Fore.RED,f"Loop dedected : Device {hostname} allready parsed.\n Check link between {hostname} and {hoplist[-1]}!192")
             print (Fore.RESET)
             quit()
         hoplist.append(hostname)

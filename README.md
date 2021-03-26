@@ -1,6 +1,6 @@
 # networkautomation
 
-### find_last_stpchange.py
+## find_last_stpchange.py
 I wanted to create a script to find the port where we get the last Spanningtree-Topology-Change.
 I decided to run this in a shell and use Python.
 
@@ -28,7 +28,7 @@ pip install netmiko, colorama
 
 ### How it workes:
 
-![Flowchart](Flowchart.png)
+![Flowchart](images/Flowchart.png)
 
 It asks for the IP-Address of a seeddevice and the login credentials.
 Then it logs in and run the command "show spanning-tree detail | include last|from"
@@ -45,9 +45,10 @@ When no CDP-Neighbor is found it prints the configuration of this interface
 
 It stops when it sees the STP-Topology change from a CDP-Neighbor which was already visited.
 
+* Lates Improvement: Add support for 25, 40 and 100G Ports
 * ToDo: Work when STP-Topology change is longer than 24 houres.
 
-![Screenshot of an succesfull run](screenshot.png)
+![Screenshot of an succesfull run](images/screenshot.png)
 
 Thanks for beeing published on Cisco Code Exchange: 
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/edergernot/networkautomation)
